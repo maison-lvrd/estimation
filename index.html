@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulateur d'Estimation Gratuite</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #111;
+      color: #fff;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      background: #222;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    h1 {
+      text-align: center;
+      color: #f0f0f0;
+      margin-top: 20px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin: 10px 0 5px;
+      font-weight: bold;
+    }
+
+    input,
+    select {
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #555;
+      border-radius: 4px;
+      background: #333;
+      color: #fff;
+    }
+
+    button {
+      padding: 12px;
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #444;
+      border: 1px solid #666;
+      border-radius: 4px;
+      color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Simulateur d'Estimation Gratuite</h1>
+    <!-- Formulaire -->
+    <form id="estimationForm">
+      <label for="localisation">Localisation :</label>
+      <input type="text" id="localisation" name="localisation" placeholder="Adresse ou ville" required>
+
+      <label for="type">Type de bien :</label>
+      <select id="type" name="type" required>
+        <option value="">Sélectionnez</option>
+        <option value="appartement">Appartement</option>
+        <option value="maison">Maison</option>
+        <option value="terrain">Terrain</option>
+      </select>
+
+      <label for="surface">Surface habitable (en m²) :</label>
+      <input type="number" id="surface" name="surface" placeholder="Ex : 100" required>
+
+      <label for="pieces">Nombre de pièces :</label>
+      <input type="number" id="pieces" name="pieces" placeholder="Ex : 4" required>
+
+      <label for="etat">État général :</label>
+      <select id="etat" name="etat" required>
+        <option value="">Sélectionnez</option>
+        <option value="neuf">Neuf</option>
+        <option value="bon">Bon état</option>
+        <option value="renover">À rénover</option>
+      </select>
+
+      <label for="piscine">Piscine :</label>
+      <select id="piscine" name="piscine" required>
+        <option value="">Sélectionnez</option>
+        <option value="oui">Oui</option>
+        <option value="non">Non</option>
+      </select>
+
+      <label for="vue">Vue dégagée :</label>
+      <select id="vue" name="vue" required>
+        <option value="">Sélectionnez</option>
+        <option value="oui">Oui</option>
+        <option value="non">Non</option>
+      </select>
+
+      <label for="visavis">Vis-à-vis :</label>
+      <select id="visavis" name="visavis" required>
+        <option value="">Sélectionnez</option>
+        <option value="oui">Oui</option>
+        <option value="non">Non</option>
+      </select>
+
+      <label for="mitoyenne">Maison mitoyenne :</label>
+      <select id="mitoyenne" name="mitoyenne" required>
+        <option value="">Sélectionnez</option>
+        <option value="oui">Oui</option>
+        <option value="non">Non</option>
+      </select>
+
+      <label for="email">Email :</label>
+      <input type="email" id="email" name="email" placeholder="Votre email" required>
+
+      <label for="telephone">Téléphone :</label>
+      <input type="tel" id="telephone" name="telephone" placeholder="Votre numéro de téléphone" required>
+
+      <button type="submit">Obtenir une estimation</button>
+    </form>
+
+    <div id="result" class="result" style="display: none;"></div>
+  </div>
+
+  <script>
+    document.getElementById('estimationForm').addEventListener('submit', function (event) {
+      event.preventDefault(); // Empêche le rechargement de la page
+
+      const localisation = document.getElementById('localisation').value;
+      const type = document.getElementById('type').value;
+      const surface = parseFloat(document.getElementById('surface').value);
+      const pieces = parseInt(document.getElementById('pieces').value);
+      const etat = document.getElementById('etat').value;
+      const piscine = document.getElementById('piscine').value;
+      const vue = document.getElementById('vue').value;
+      const visavis = document.getElementById('visavis').value;
+      const mitoyenne = document.getElementById('mitoyenne').value;
+
+      let prixM2 = 2000;
+      if (type === 'maison') prixM2 += 500;
+      if (etat === 'neuf') prixM2 += 300;
+      if (etat === 'renover') prixM2 -= 300;
+      if (piscine === 'oui') prixM2 += 200;
+      if (vue === 'oui') prixM2 += 150;
+      if (visavis === 'oui') prixM2 -= 100;
+      if (mitoyenne === 'oui') prixM2 -= 200;
+
+      const estimation = surface * prixM2;
+
+      // Affichage du résultat
+      const resultDiv = document.getElementById('result');
+      resultDiv.style.display = 'block';
+      resultDiv.innerHTML = `L'estimation de votre bien situé à <strong>${localisation}</strong> est d'environ <strong>${estimation.toLocaleString()} €</strong>.`;
+    });
+  </script>
+</body>
+
+</html>
